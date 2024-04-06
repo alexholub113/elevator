@@ -19,14 +19,16 @@ public class SimpleElevatorController : IElevatorInternalRemote, IElevatorExtern
     public SimpleElevatorController(IElevator elevator)
     {
         _elevator = elevator;
+        CurrentFloor = _elevator.CurrentFloor;
         _elevator.DestinationReached += HandleDestinationReached;
+        _elevator.FloorChanged += level => CurrentFloor = level;
     }
 
     public event Action<int>? DestinationReached;
 
     public MoveDirection CurrentDirection { get; private set; } = MoveDirection.None;
 
-    public int CurrentLevel => _elevator.CurrentLevel;
+    public int CurrentFloor { get; private set; }
 
     public void Call(int floor)
     {
@@ -40,13 +42,13 @@ public class SimpleElevatorController : IElevatorInternalRemote, IElevatorExtern
     {
         lock (_lockObject)
         {
-            if (CurrentLevel == floor)
+            if (CurrentFloor == floor)
             {
                 _elevator.OpenDoor();
                 return;
             }
 
-            if (CurrentLevel < floor)
+            if (CurrentFloor < floor)
             {
                 _upQueue.Enqueue(floor, floor);
             }
@@ -137,7 +139,7 @@ public class SimpleElevatorController : IElevatorInternalRemote, IElevatorExtern
         }
     }
 
-    protected virtual void OnDestinationReached(int obj)
+    private void OnDestinationReached(int obj)
     {
         DestinationReached?.Invoke(obj);
     }

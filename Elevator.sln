@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator.Component", "Elevator.Component\Elevator.Component.csproj", "{945558A8-7DCD-44AE-90A5-AAEF6F9C78F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator.Tests", "Elevator.Tests\Elevator.Tests.csproj", "{FE2ED66A-BBC0-4919-9BF2-B4C41CC170D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{945558A8-7DCD-44AE-90A5-AAEF6F9C78F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{945558A8-7DCD-44AE-90A5-AAEF6F9C78F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{945558A8-7DCD-44AE-90A5-AAEF6F9C78F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE2ED66A-BBC0-4919-9BF2-B4C41CC170D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE2ED66A-BBC0-4919-9BF2-B4C41CC170D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE2ED66A-BBC0-4919-9BF2-B4C41CC170D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE2ED66A-BBC0-4919-9BF2-B4C41CC170D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

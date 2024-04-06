@@ -6,5 +6,5 @@ public interface IElevatorRemote
 
     MoveDirection CurrentDirection { get; }
 
-    int CurrentLevel { get; }
+    int CurrentFloor { get; }
 }
