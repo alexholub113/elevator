@@ -40,20 +40,13 @@ public class SimpleElevatorController : ISimpleElevatorController
                 return;
             }
 
-            if (CurrentFloor < floor)
-            {
-                _upQueue.Enqueue(floor, floor);
-            }
-            else
-            {
-                _downQueue.Enqueue(floor, floor);
-            }
-
-            MoveNext();
+            var queue = CurrentFloor < floor ? _upQueue : _downQueue;
+            queue.Enqueue(floor, floor);
+            TryMoveElevator();
         }
     }
 
-    private void MoveNext()
+    private void TryMoveElevator()
     {
         if (CurrentDirection == MoveDirection.None)
         {
@@ -68,28 +61,17 @@ public class SimpleElevatorController : ISimpleElevatorController
                 _elevator.SetDestination(_downQueue.Peek());
             }
         }
-        else if (CurrentDirection == MoveDirection.Down)
-        {
-            if (_downQueue.Count > 0)
-            {
-                _elevator.SetDestination(_downQueue.Peek());
-            }
-            else
-            {
-                CurrentDirection = MoveDirection.None;
-                MoveNext();
-            }
-        }
         else
         {
-            if (_upQueue.Count > 0)
+            var queue = CurrentDirection == MoveDirection.Down ? _downQueue : _upQueue;
+            if (queue.Count > 0)
             {
-                _elevator.SetDestination(_upQueue.Peek());
+                _elevator.SetDestination(queue.Peek());
             }
             else
             {
                 CurrentDirection = MoveDirection.None;
-                MoveNext();
+                TryMoveElevator();
             }
         }
     }
@@ -102,27 +84,16 @@ public class SimpleElevatorController : ISimpleElevatorController
 
             try
             {
-                if (CurrentDirection == MoveDirection.Down)
+                var queue = CurrentDirection == MoveDirection.Down ? _downQueue : _upQueue;
+                if (floor != queue.Peek())
                 {
-                    if (floor != _downQueue.Peek())
-                    {
-                        throw new InvalidOperationException("Controller out of sync");
-                    }
-
-                    _downQueue.Dequeue();
+                    throw new InvalidOperationException("Controller out of sync");
                 }
-                else
-                {
-                    if (floor != _upQueue.Peek())
-                    {
-                        throw new InvalidOperationException("Controller out of sync");
-                    }
 
-                    _upQueue.Dequeue();
-                }
+                queue.Dequeue();
 
                 OnDestinationReached(floor);
-                MoveNext();
+                TryMoveElevator();
             }
             finally
             {
