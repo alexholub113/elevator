@@ -20,9 +20,9 @@ public class SimpleElevatorControllerTests
     [Fact]
     public void MultipleCalls_SetDestinationCalledForNextFloor()
     {
-        _controller.Call(1);
-        _controller.Call(2);
-        _controller.Call(3);
+        _controller.SetDestination(1);
+        _controller.SetDestination(2);
+        _controller.SetDestination(3);
 
         _elevatorMock.Verify(e => e.SetDestination(1), Times.Exactly(3));
     }
@@ -35,9 +35,9 @@ public class SimpleElevatorControllerTests
         _controller.CurrentDirection.Should().Be(MoveDirection.None);
 
         // Initially, move up
-        _controller.Call(1);
+        _controller.SetDestination(1);
         _controller.SetDestination(5);
-        _controller.Call(2);
+        _controller.SetDestination(2);
         _controller.SetDestination(4);
         _elevatorMock.Verify(e => e.SetDestination(2), Times.Never);
         _elevatorMock.Verify(e => e.SetDestination(1));
@@ -87,7 +87,7 @@ public class SimpleElevatorControllerTests
         _controller.CurrentDirection.Should().Be(MoveDirection.None);
 
         // Initially, move up
-        _controller.Call(3);
+        _controller.SetDestination(3);
         _controller.SetDestination(6); // The elevator will start moving up to 3, then 6
         _elevatorMock.Verify(e => e.SetDestination(3));
         _controller.CurrentDirection.Should().Be(MoveDirection.Up);
@@ -99,7 +99,7 @@ public class SimpleElevatorControllerTests
         _elevatorMock.Raise(m => m.DestinationReached += null, 3);
         actualOrder.Should().BeEquivalentTo(new[] { 3 });
         _controller.CurrentDirection.Should().Be(MoveDirection.Up);
-        _controller.Call(1); // Now, there's a request below the current level
+        _controller.SetDestination(1); // Now, there's a request below the current level
         _elevatorMock.Verify(e => e.SetDestination(6));
 
         // Complete moving up first

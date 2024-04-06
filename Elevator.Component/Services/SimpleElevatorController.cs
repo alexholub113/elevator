@@ -9,7 +9,7 @@ namespace Elevator.Component.Services;
 /// - The controller will then move the elevator to the next destination.
 /// - When the elevator reaches a destination, the controller will remove the destination from the queue and move to the next destination.
 /// </summary>
-public class SimpleElevatorController : IElevatorInternalRemote, IElevatorExternalRemote
+public class SimpleElevatorController : ISimpleElevatorController
 {
     private readonly IElevator _elevator;
     private readonly PriorityQueue<int, int> _downQueue = new(new DescendingComparer());
@@ -29,14 +29,6 @@ public class SimpleElevatorController : IElevatorInternalRemote, IElevatorExtern
     public MoveDirection CurrentDirection { get; private set; } = MoveDirection.None;
 
     public int CurrentFloor { get; private set; }
-
-    public void Call(int floor)
-    {
-        lock (_lockObject)
-        {
-            SetDestination(floor);
-        }
-    }
 
     public void SetDestination(int floor)
     {
