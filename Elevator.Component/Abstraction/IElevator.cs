@@ -1,10 +1,10 @@
 namespace Elevator.Component.Abstraction;
 
-public interface IElevatorDevice
+public interface IElevator
 {
-    event Action<int> FloorChanged;
+    event Action<int> DestinationReached;
 
-    int Floor { get; }
+    int CurrentLevel { get; }
 
     void SetDestination(int floor);
 

@@ -2,9 +2,9 @@ namespace Elevator.Component.Abstraction;
 
 public interface IElevatorRemote
 {
-    event Action<int> FloorChanged;
+    event Action<int> DestinationReached;
 
-    MoveDirection MoveDirection { get; }
+    MoveDirection CurrentDirection { get; }
 
-    int Floor { get; }
+    int CurrentLevel { get; }
 }

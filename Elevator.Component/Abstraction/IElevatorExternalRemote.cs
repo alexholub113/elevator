@@ -1,6 +1,6 @@
 namespace Elevator.Component.Abstraction;
 
-public interface IElevatorExternalRemote : IElevatorRemote
+public interface IElevatorExternalRemote
 {
-    void Call(int level, DestinationDirection direction);
+    void Call(int level);
 }

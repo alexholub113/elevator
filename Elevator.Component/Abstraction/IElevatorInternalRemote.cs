@@ -2,5 +2,5 @@ namespace Elevator.Component.Abstraction;
 
 public interface IElevatorInternalRemote : IElevatorRemote
 {
-    void SetDestination(int floor);
+    void SetDestination(int level);
 }
