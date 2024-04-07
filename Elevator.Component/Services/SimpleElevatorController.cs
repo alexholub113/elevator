@@ -14,6 +14,8 @@ public class SimpleElevatorController : ISimpleElevatorController
     private readonly IElevator _elevator;
     private readonly PriorityQueue<int, int> _downQueue = new(new DescendingComparer());
     private readonly PriorityQueue<int, int> _upQueue = new(new AscendingComparer());
+    private readonly HashSet<int> _floorsInQueue = [];
+
     private readonly object _lockObject = new();
 
     public SimpleElevatorController(IElevator elevator)
@@ -34,6 +36,8 @@ public class SimpleElevatorController : ISimpleElevatorController
     {
         lock (_lockObject)
         {
+            if (_floorsInQueue.Contains(floor)) return;
+
             if (CurrentFloor == floor)
             {
                 _elevator.OpenDoor();
@@ -42,6 +46,8 @@ public class SimpleElevatorController : ISimpleElevatorController
 
             var queue = CurrentFloor < floor ? _upQueue : _downQueue;
             queue.Enqueue(floor, floor);
+            _floorsInQueue.Add(floor);
+
             TryMoveElevator();
         }
     }
@@ -91,6 +97,7 @@ public class SimpleElevatorController : ISimpleElevatorController
                 }
 
                 queue.Dequeue();
+                _floorsInQueue.Remove(floor);
 
                 OnDestinationReached(floor);
                 TryMoveElevator();

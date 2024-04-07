@@ -124,4 +124,19 @@ public class SimpleElevatorControllerTests
         _controller.CurrentDirection.Should().Be(MoveDirection.None);
         _controller.CurrentFloor.Should().Be(1);
     }
+
+    [Fact]
+    public void MultipleCalls_IgnoreFloorIfAlreadyInQueue()
+    {
+        _controller.SetDestination(1);
+        _controller.SetDestination(1); // Ignore this
+        _controller.SetDestination(3);
+
+        _elevatorMock.Verify(e => e.SetDestination(3), Times.Never);
+
+        _elevatorMock.Raise(m => m.FloorChanged += null, 1);
+        _elevatorMock.Raise(m => m.DestinationReached += null, 1);
+
+        _elevatorMock.Verify(e => e.SetDestination(3), Times.Once);
+    }
 }
